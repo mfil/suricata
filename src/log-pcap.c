@@ -648,8 +648,13 @@ static PcapLogData *PcapLogDataCopy(const PcapLogData *pl)
         /* Allocate the buffers. */
 
         copy_comp->buffer = SCMalloc(copy_comp->buffer_size);
+        if (copy_comp->buffer == NULL) {
+            SCLogError(SC_ERR_MEM_ALLOC, "SCMalloc failed: %s",
+                    strerror(errno));
+            return NULL;
+        }
         copy_comp->pcap_buf = SCMalloc(copy_comp->pcap_buf_size);
-        if (copy_comp->buffer == NULL || copy_comp->pcap_buf == NULL) {
+            if (copy_comp->pcap_buf == NULL) {
             SCLogError(SC_ERR_MEM_ALLOC, "SCMalloc failed: %s",
                     strerror(errno));
             return NULL;
