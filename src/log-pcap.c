@@ -1315,11 +1315,15 @@ static OutputInitResult PcapLogInitCtx(ConfNode *conf)
             comp->pcap_buf_size = sizeof(struct pcap_file_header) +
                     sizeof(struct pcap_pkthdr) + PCAP_SNAPLEN;
             comp->pcap_buf = SCMalloc(comp->pcap_buf_size);
+            if (pl->compression.pcap_buf == NULL) {
+                SCLogError(SC_ERR_MEM_ALLOC, "SCMalloc failed: %s",
+                        strerror(errno));
+                exit(EXIT_FAILURE);
+            }
             comp->pcap_buf_wrapper = SCFmemopen(comp->pcap_buf,
                     comp->pcap_buf_size, "w");
-            if (pl->compression.pcap_buf == NULL ||
-                    pl->compression.pcap_buf_wrapper == NULL) {
-                SCLogError(SC_ERR_MEM_ALLOC, "SCFmemopen failed: %s",
+            if (pl->compression.pcap_buf_wrapper == NULL) {
+                SCLogError(SC_ERR_FOPEN, "SCFmemopen failed: %s",
                         strerror(errno));
                 exit(EXIT_FAILURE);
             }
