@@ -249,7 +249,7 @@ static int PcapLogCloseFile(ThreadVars *t, PcapLogData *pl)
                 /* pcap_dump_close() has closed its output ``file'',
                  * so the buffer has been freed - allocate it again. */
                 comp->pcap_buf = SCMalloc(comp->pcap_buf_size);
-                if (pl->compression.pcap_buf == NULL) {
+                if (comp->pcap_buf == NULL) {
                     SCLogError(SC_ERR_MEM_ALLOC, "SCMalloc failed: %s",
                             strerror(errno));
                 }
