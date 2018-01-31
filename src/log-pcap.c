@@ -1315,7 +1315,7 @@ static OutputInitResult PcapLogInitCtx(ConfNode *conf)
             comp->pcap_buf_size = sizeof(struct pcap_file_header) +
                     sizeof(struct pcap_pkthdr) + PCAP_SNAPLEN;
             comp->pcap_buf = SCMalloc(comp->pcap_buf_size);
-            if (pl->compression.pcap_buf == NULL) {
+            if (comp->pcap_buf == NULL) {
                 SCLogError(SC_ERR_MEM_ALLOC, "SCMalloc failed: %s",
                         strerror(errno));
                 exit(EXIT_FAILURE);
